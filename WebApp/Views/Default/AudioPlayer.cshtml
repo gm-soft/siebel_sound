@@ -1,0 +1,48 @@
+﻿@using WebApp.ViewModels.Default
+@model string
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Аудио - Siebel Sound";
+}
+
+@{
+    Html.RenderPartial("~/Views/Default/_Preloader.cshtml", new PreloadPartialViewModel
+    {
+        InitialPageTitle = "Нажмите для начала воспроизведения аудио",
+        InitialPageStartPlayButtonText = "Воспризвести аудио"
+    });
+}
+
+<div class="mt-3 hidden player-wrapper__tag">
+    @{ Html.RenderPartial("~/Views/Default/_AudioPlayerPartial.cshtml", model: Model); }
+</div>
+
+
+
+@section scripts {
+
+    <script>
+        $(function () {
+
+            var audioPlayer = new StreamingAudioPlayer({
+                audioPlayerDocumentId: "audio-player",
+                onPlayCallback: showVideoPlayerAfterLoading,
+                errorPageUrl: "/error"
+            });
+
+            var mediaWaitPreloader = new MediaWaitPreloader({
+                playerWrapper: $(".player-wrapper__tag"),
+                preloaderInitialTextBlock: $(".preloader-initial-text__tag"),
+                preloaderSpinnerBlock: $(".preloader-load-text__tag"),
+                startMediaLoadButton: $(".playing-start__tag"),
+                onStartMediaLoadingButtonClickedCallback: function () {
+                    audioPlayer.Play();
+                }
+            });
+
+            function showVideoPlayerAfterLoading() {
+                mediaWaitPreloader.ShowMediaPlayerAfterLoading();
+            }
+        });
+    </script>
+}

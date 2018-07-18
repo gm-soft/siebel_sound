@@ -1,0 +1,9 @@
+﻿@model string
+
+<div class="mb-2 h2">Аудио-дорожка</div>
+
+<div>
+    <audio id="audio-player" controls controlsList="nodownload">
+        <source src="/api/media/GetAudio/?audio=@Model" />
+    </audio>
+</div>

@@ -1,0 +1,103 @@
+﻿@using WebApp.ViewModels.Default
+@model WebApp.ViewModels.Default.VideoPlayerViewModel
+@{
+    ViewBag.Title = "Видео - Siebel Sound";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{ 
+    Html.RenderPartial("~/Views/Default/_Preloader.cshtml", new PreloadPartialViewModel
+    {
+        InitialPageTitle = "Нажмите для начала воспроизведения видео",
+        InitialPageStartPlayButtonText = "Воспризвести видео",
+        IsVideo = true
+    });
+}
+
+<div class="mt-3 hidden player-wrapper__tag">
+
+    <div class="mb-2 h2">Видео</div>
+
+    <video id="video-player" class="video-player__tag"
+           controls
+           controlsList="nodownload"
+           muted="muted"
+           preload="auto">
+        <source src="/api/media/GetVideo/?video=@Model.VideoFilePathEncoded" type="video/mp4" />
+        Есть великая вероятность, что ваш браузер не поддерживает тег video
+    </video>
+
+    <div class="my-2 w-100">
+
+        <div class="d-inline-block w-25">
+            <button type="button" class="btn btn-outline-secondary fullscreen__tag">
+                На весь экран
+            </button>
+        </div>
+
+        <div class="d-inline-block w-25 display-audio-time__tag">
+
+        </div>
+
+    </div>
+
+    <div class="my-2 hidden">
+        @{ Html.RenderPartial("~/Views/Default/_AudioPlayerPartial.cshtml", model: Model.AudioFilePathEncoded); }
+    </div>
+
+
+</div>
+
+@section scripts {
+
+    <script src="~/scripts/StreamingVideoPlayer.js"></script>
+
+    <script>
+        $(function () {
+            var audioPlayer = new StreamingAudioPlayer({
+                audioPlayerDocumentId: "audio-player",
+                onPlayCallback: function() {
+                    showVideoPlayerAfterLoading("audio");
+                },
+                errorPageUrl: "/error",
+                displayCurrentPosAndDurationBlockCssTag: "display-audio-time__tag",
+            });
+
+            var videoPlayer = new StreamingVideoPlayer({
+                videoPlayerDocumentId: "video-player",
+                onPlayCallback: function () {
+                    showVideoPlayerAfterLoading("video");
+                },
+                errorPageUrl: "/error",
+                audioPlayer: audioPlayer
+            });
+
+            var mediaWaitPreloader = new MediaWaitPreloader({
+                playerWrapper: $(".player-wrapper__tag"),
+                preloaderInitialTextBlock: $(".preloader-initial-text__tag"),
+                preloaderSpinnerBlock: $(".preloader-load-text__tag"),
+                startMediaLoadButton: $(".playing-start__tag"),
+                onStartMediaLoadingButtonClickedCallback: function () {
+
+                    videoPlayer.Play();
+                    audioPlayer.Play();
+                }
+            });
+
+            function showVideoPlayerAfterLoading(type) {
+                if (type === "audio" && !videoPlayer.DoesStartedToPlay())
+                    audioPlayer.Pause();
+                else {
+
+                    mediaWaitPreloader.ShowMediaPlayerAfterLoading();
+                }
+                
+            }
+
+            $(".fullscreen__tag").click(function () {
+
+                videoPlayer.FullscreenSize();
+            });
+        });
+    </script>
+}

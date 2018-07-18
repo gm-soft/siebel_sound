@@ -1,0 +1,25 @@
+﻿@model string
+@{
+    ViewBag.Title = "Ошибка сервера - Siebel Sound";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="my-3 text-center">
+
+    <h1 class="my-3 text-danger">Ошибка сервера!</h1>
+    
+    @if (Model != null)
+    {
+        <div class="my-3">
+            <span class="h3">@Html.Raw(Model)</span>
+        </div>
+    }    
+
+    <div class="my-3">
+        <span>Попробуйте еще раз открыть ссылку в отчете либо обратитесь к разработчикам:</span>
+        <br />
+        <i>Дирекция автоматизации розницы - Департамент CRM-систем</i>
+    </div>
+</div>
+
+

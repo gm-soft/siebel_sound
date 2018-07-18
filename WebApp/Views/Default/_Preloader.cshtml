@@ -1,0 +1,53 @@
+﻿@model WebApp.ViewModels.Default.PreloadPartialViewModel
+
+<div class="text-center preloader-initial-text__tag">
+
+    <div class="h1 my-3">@Model.InitialPageTitle</div>
+
+    <br />
+    <br />
+    <br />
+
+    <div class="mt-3">
+        <button class="btn btn-primary btn-lg btn-block playing-start__tag">
+            @Model.InitialPageStartPlayButtonText
+        </button>
+    </div>
+</div>
+    
+<div class="text-center hidden preloader-load-text__tag">
+    <div class="h2 my-3">
+        Загрузка начата. Подождите немного
+    </div>
+
+    <div class="h4 mb-3">Не закрывайте окно браузера и не обновляйте страницу</div>
+
+    <div class="sk-circle">
+        <div class="sk-circle1 sk-child"></div>
+        <div class="sk-circle2 sk-child"></div>
+        <div class="sk-circle3 sk-child"></div>
+        <div class="sk-circle4 sk-child"></div>
+        <div class="sk-circle5 sk-child"></div>
+        <div class="sk-circle6 sk-child"></div>
+        <div class="sk-circle7 sk-child"></div>
+        <div class="sk-circle8 sk-child"></div>
+        <div class="sk-circle9 sk-child"></div>
+        <div class="sk-circle10 sk-child"></div>
+        <div class="sk-circle11 sk-child"></div>
+        <div class="sk-circle12 sk-child"></div>
+    </div>
+    
+    <div class="my-3 text-info">
+        @if (Model.IsVideo)
+        {
+            <text>
+                Видео-файл конвертируется и загружается. Это может занять пару минут - это нормально
+                <br/>
+            </text>
+        }
+        Если загрузка длится более 2-х минут, значит либо файл большой, либо произошла ошибка.
+        <br/>
+        Необходимо снова открыть ссылку в отчете или обратиться за помощью к администраторам.
+    </div>
+</div>
+
